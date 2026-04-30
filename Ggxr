@@ -1,0 +1,63 @@
+# برنامج متكامل لتقدير الطلاب مع لمسات إبداعية
+import os
+
+# إعدادات مرنة للتقديرات (قابلة للتغيير)
+GRADES = {
+    "ممتاز": (90, 101),
+    "جيد جدًا": (80, 90),
+    "جيد": (65, 80),
+    "ضعيف": (0, 65)
+}
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def get_grade_category(score):
+    for category, (low, high) in GRADES.items():
+        if low <= score < high:
+            return category
+    return "غير معروف"
+
+def show_icon(grade):
+    icons = {"ممتاز": "🌟", "جيد جدًا": "👍", "جيد": "🙂", "ضعيف": "⚠️"}
+    return icons.get(grade, "❓")
+
+def main():
+    while True:
+        clear_screen()
+        print("=== نظام تقدير الطلاب الإبداعي ===\n")
+        try:
+            score = float(input("أدخل درجة الطالب (0-100): "))
+            if not (0 <= score <= 100):
+                print("⚠️ الدرجة خارج النطاق المسموح. حاول مجددًا.")
+                input("اضغط Enter...")
+                continue
+            
+            grade = get_grade_category(score)
+            icon = show_icon(grade)
+            
+            print(f"\n{icon} التقدير: {grade} {icon}")
+            # عرض شريط تقدم بسيط
+            bar_len = int(score / 2)
+            print(f"[{'=' * bar_len}{' ' * (50 - bar_len)}] {score}%")
+            
+            # نصائح إبداعية
+            if grade == "ضعيف":
+                print("📘 نصيحة: راجع الأساسيات واستعن بمعلمك.")
+            elif grade == "جيد":
+                print("📈 نصيحة: ركز على الأخطاء المتكررة وتدرب أكثر.")
+            elif grade == "جيد جدًا":
+                print("🎯 نصيحة: أنت قريب من الإتقان، زِد ساعات المذاكرة قليلًا.")
+            elif grade == "ممتاز":
+                print("🏆 نصيحة ممتاز! كرر أسلوبك وشارك تجربتك مع زملائك.")
+            
+        except ValueError:
+            print("❌ خطأ: الرجاء إدخال رقم صحيح.")
+        
+        again = input("\nهل تريد تقييم طالب آخر؟ (y/n): ").strip().lower()
+        if again != 'y':
+            print("شكرًا لاستخدام النظام 🌹")
+            break
+
+if __name__ == "__main__":
+    main()
